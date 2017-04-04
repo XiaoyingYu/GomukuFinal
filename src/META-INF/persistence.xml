@@ -4,11 +4,13 @@
 	<provider>org.eclipse.persistence.jpa.PersistenceProvider</provider> 
 	<jta-data-source>jdbc/infsci1017</jta-data-source>
 	<class>eud.pitt.webproject2.entities.BaseEntity</class>
+	<class>eud.pitt.webproject2.entities.GomokuGame</class>
+	<class>eud.pitt.webproject2.entities.GomokuUser</class>
  	<properties> 
   	 <property name="javax.persistence.jdbc.driver" value="com.mysql.jdbc.Driver" />
-  	 <property name="javax.persistence.jdbc.url" value="jdbc:mysql://sis-teach-01.sis.pitt.edu:3306/xiy62is1017" />
-   	<property name="javax.persistence.jdbc.user" value="xiy62is1017"/>
-   	<property name="javax.persistence.jdbc.password" value="xiy62@pitt.edu" />
+  	 <property name="javax.persistence.jdbc.url" value="jdbc:mysql://sis-teach-01.sis.pitt.edu:3306/xiz138is1017" />
+   	<property name="javax.persistence.jdbc.user" value="xiz138is1017"/>
+   	<property name="javax.persistence.jdbc.password" value="xiz138@pitt.edu" />
    <property name="eclipselink.dll-generation" value="drop-and-create-tables"/>
    <property name="eclipselink.dll-generation.output-mode" value="database"/>
 </properties>
