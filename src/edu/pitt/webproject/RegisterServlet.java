@@ -1,17 +1,23 @@
 package edu.pitt.webproject;
 
 import java.io.IOException;
+
+import javax.ejb.EJB;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import edu.pitt.webproject2.facade.RegisterFacade;
+
 /**
  * Servlet implementation class RegisterServlet
  */
 @WebServlet("/RegisterServlet")
 public class RegisterServlet extends HttpServlet {
+	@EJB
+	RegisterFacade rf;
 	private static final long serialVersionUID = 1L;
        
     /**
@@ -37,10 +43,25 @@ public class RegisterServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		String user = request.getParameter("username");
+		String email = request.getParameter("email");
+		String password = request.getParameter("password");
+		String infor="";
+		System.out.println("--->" + rf.checkUser(email));
+		if(rf.checkUser(email) == null){   
+			   int id = rf.addUserToDB(user, email, password);
+			   infor = "Success! Welcome "+ user;
+//			   int id = rf.getUserID(email, password); //
+			   request.setAttribute("userID", id);// Use userID(name of id) to get id
+			      // in jsp, id is a string
+		}else{
+			   infor = "This email has been registered. Please change another one or login.";
+			  }
+			  // get boolean result to send message back.
+
+
 		// Call facade function to save profile.
 		
 		// get boolean result to send message back.
-		String infor = "Success! Your user name is "+user;
 		request.setAttribute("info", infor+"<br>");
 		request.getRequestDispatcher("message.jsp").forward(request, response);
     
