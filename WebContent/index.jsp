@@ -10,17 +10,43 @@
 h1.logo { 
 font-family:"Arial Black", Gadget, sans-serif 
 }
-#userbar {
+a:link {
+    text-decoration: underline;
+    color: black;
+}
+
+a:visited {
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+a:active {
+    text-decoration: underline;
+}
+.userbar {
     float: right;
-    width: 200px;
-    height:35px;
-    color: #0d9adb;
-    font-size: 15px;
-    background-color: #DFF6F5;
+    /* width: 200px;
+    height:35px; */
+    color: black;
+    font-size: 20px;
+    font-family: "Verdana", Geneva, sans-serif
+}
+
+.btn-primary {
+    background-color: white;
+    color: black;
+    border: 2px solid #e7e7e7;
+    border-radius: 12px;
+    font-size: 24px;
+    padding: 15px 32px;
+    font-family:"Arial Black", Gadget, sans-serif; 
+    text-decoration: none
 }
 
 </style>
-<link rel="stylesheet" href="style/bootstrap.min.css"/>
 
 
 </head>
@@ -28,6 +54,7 @@ font-family:"Arial Black", Gadget, sans-serif
 <body>
 <div class = "header">
 	<h1 class="logo"><center>GOMOKU MASTER</center></h1>
+	<br>
 	<div class = "userbar">
 	<% 
 	GomokuUser user = (GomokuUser) session.getAttribute("userProfile");
@@ -35,19 +62,26 @@ font-family:"Arial Black", Gadget, sans-serif
 	if(user == null){
 		out.print("<a href='register.jsp'>Register</a> / <a href='loginfinal.jsp'>Log in</a>");
 	} else {
-		out.print("Hello " + user.getUsername() + "! <a href='account.jsp'>My Account</a> or <a href='logout.jsp'>Log out</a>");
+		out.print("Hello " + user.getUsername() + " ! <a href='account.jsp'>My Account</a> or <a href='logout.jsp'>Log out</a>");
 	}
 	%>
 	</div>
 </div>
-
-<h2><center>Main Page</center></h2>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
 
 
 <div class="link">
 <p>
-<a href="#" class="btn btn-default btn-lg active" role="button">Start A Game</a>
-<a href="#" class="btn btn-default btn-lg active" role="button">My Account</a>
+<center><a href="#" class="btn-primary" role="button">Start A Game</a></center>
 </p>
 </div>
 
