@@ -17,12 +17,12 @@ public class LoginFacade {
 		super();
 	}
 	
-	public String checkUserPass(String username, String password){
+	public GomokuUser checkUserPass(String email, String password){
 		
 		try{
-			GomokuUser user = (GomokuUser) em.createQuery("SELECT u FROM GomokuUser u WHERE u.username=:username AND u.password=:password")
-					.setParameter("username", username).setParameter("password", password).getSingleResult();
-			return user.getUsername();
+			GomokuUser user = (GomokuUser) em.createQuery("SELECT u FROM GomokuUser u WHERE u.email=:email AND u.password=:password")
+					.setParameter("email", email).setParameter("password", password).getSingleResult();
+			return user;
 		} catch (NoResultException e) {
 			return null;
 		}

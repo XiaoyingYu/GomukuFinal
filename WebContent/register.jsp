@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>BootstrapValidator demo</title>
+    <title>Sign Up!</title>
 
     <link rel="stylesheet" href="style/bootstrap.min.css"/>
     <link rel="stylesheet" type="text/css" href="example.css">
@@ -10,12 +10,27 @@
     <script type="text/javascript" src="js/jquery-1.10.2.min.js"></script>
     <script type="text/javascript" src="js/bootstrap.min.js"></script>
     <script type="text/javascript" src="js/bootstrapValidator.min.js"></script>
+    
+    <style>
+    p {background-color: #FFCCCC;
+      font-family:sans-serif
+    }
+    </style>
 </head>
 <body>
+	  <center></center><p>
+                 <%
+    				if (request.getAttribute("info") != null) {
+    				out.println(request.getAttribute("info"));
+    							
+    			}
+    		%>
+    		</p></center>
     <div class="container">
         <div class="row">
             <div class="col-lg-8 col-lg-offset-2">
                 <div class="page-header">
+              
                     <h2>Sign In!</h2>
                 </div>
 
@@ -93,6 +108,9 @@ $(document).ready(function() {
             },
             email: {
                 validators: {
+                	notEmpty: {
+                        message: 'The email is required and cannot be empty'
+           		    },
                     emailAddress: {
                         message: 'The input is not a valid email address'
                     }

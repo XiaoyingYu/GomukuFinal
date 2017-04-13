@@ -63,7 +63,7 @@ public class RegisterServlet extends HttpServlet {
 		
 		// get boolean result to send message back.
 		request.setAttribute("info", infor+"<br>");
-		request.getRequestDispatcher("message.jsp").forward(request, response);
+		request.getRequestDispatcher("register.jsp").forward(request, response);
     
 //		doGet(request, response);
 	}
