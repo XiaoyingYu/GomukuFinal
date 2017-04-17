@@ -4,8 +4,9 @@
 	<provider>org.eclipse.persistence.jpa.PersistenceProvider</provider> 
 	<jta-data-source>jdbc/infsci2017</jta-data-source>
 	<class>eud.pitt.webproject2.entities.BaseEntity</class>
-	<class>eud.pitt.webproject2.entities.GomokuGame</class>
 	<class>eud.pitt.webproject2.entities.GomokuUser</class>
+	<class>eud.pitt.webproject2.entities.GomokuJson</class>
+	<class>eud.pitt.webproject2.entities.GomokuGame</class>
  	<properties> 
   	 <property name="javax.persistence.jdbc.driver" value="com.mysql.jdbc.Driver" />
   	 <property name="javax.persistence.jdbc.url" value="jdbc:mysql://sis-teach-01.sis.pitt.edu:3306/xiz138is1017" />

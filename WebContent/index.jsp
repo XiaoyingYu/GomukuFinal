@@ -81,7 +81,7 @@ a:active {
 
 <div class="link">
 <p>
-<center><a href="#" class="btn-primary" role="button">Start A Game</a></center>
+<center><a href="game.jsp" class="btn-primary" role="button">Start A Game</a></center>
 </p>
 </div>
 

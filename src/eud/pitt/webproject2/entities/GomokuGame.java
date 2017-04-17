@@ -2,7 +2,6 @@ package eud.pitt.webproject2.entities;
 
 import java.io.Serializable;
 import javax.persistence.*;
-
 import java.sql.Timestamp;
 
 
@@ -28,13 +27,10 @@ public class GomokuGame implements Serializable {
 	@Column(name="time_of_the_game")
 	private int timeOfTheGame;
 
+	private int userID;
+
 	@Column(name="win_or_lose")
 	private String winOrLose;
-
-	//bi-directional many-to-one association to GomokuUser
-	@ManyToOne
-	@JoinColumn(name="userID")
-	private GomokuUser gomokuUser;
 
 	public GomokuGame() {
 	}
@@ -79,20 +75,20 @@ public class GomokuGame implements Serializable {
 		this.timeOfTheGame = timeOfTheGame;
 	}
 
+	public int getUserID() {
+		return this.userID;
+	}
+
+	public void setUserID(int userID) {
+		this.userID = userID;
+	}
+
 	public String getWinOrLose() {
 		return this.winOrLose;
 	}
 
 	public void setWinOrLose(String winOrLose) {
 		this.winOrLose = winOrLose;
-	}
-
-	public GomokuUser getGomokuUser() {
-		return this.gomokuUser;
-	}
-
-	public void setGomokuUser(GomokuUser gomokuUser) {
-		this.gomokuUser = gomokuUser;
 	}
 
 }
