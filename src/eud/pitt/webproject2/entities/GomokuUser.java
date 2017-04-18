@@ -2,9 +2,7 @@ package eud.pitt.webproject2.entities;
 
 import java.io.Serializable;
 import javax.persistence.*;
-
 import java.sql.Timestamp;
-import java.util.List;
 
 
 /**
@@ -37,10 +35,6 @@ public class GomokuUser implements Serializable {
 
 	@Column(name="win_num")
 	private int winNum;
-
-	//bi-directional many-to-one association to GomokuGame
-	@OneToMany(mappedBy="gomokuUser")
-	private List<GomokuGame> gomokuGames;
 
 	public GomokuUser() {
 	}
@@ -115,28 +109,6 @@ public class GomokuUser implements Serializable {
 
 	public void setWinNum(int winNum) {
 		this.winNum = winNum;
-	}
-
-	public List<GomokuGame> getGomokuGames() {
-		return this.gomokuGames;
-	}
-
-	public void setGomokuGames(List<GomokuGame> gomokuGames) {
-		this.gomokuGames = gomokuGames;
-	}
-
-	public GomokuGame addGomokuGame(GomokuGame gomokuGame) {
-		getGomokuGames().add(gomokuGame);
-		gomokuGame.setGomokuUser(this);
-
-		return gomokuGame;
-	}
-
-	public GomokuGame removeGomokuGame(GomokuGame gomokuGame) {
-		getGomokuGames().remove(gomokuGame);
-		gomokuGame.setGomokuUser(null);
-
-		return gomokuGame;
 	}
 
 }
