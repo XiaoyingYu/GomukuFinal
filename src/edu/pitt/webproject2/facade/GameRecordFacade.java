@@ -62,6 +62,16 @@ public class GameRecordFacade {
 		}
 	}
 	
+	public String returnJson(int userID){
+		try{
+			GomokuJson j = (GomokuJson) em.createQuery("SELECT j FROM GomokuJSON j WHERE j.userID=:userID")
+					.setParameter("userID", userID).getSingleResult();
+			return j.getJson();
+		} catch (NoResultException e) {
+			return null;
+		}
+	}
+	
 	public void updateJson(int userID, String json){
 		//GomokuJson j = new GomokuJson();
 		em.getTransaction().begin();
