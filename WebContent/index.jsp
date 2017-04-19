@@ -81,7 +81,13 @@ a:active {
 
 <div class="link">
 <p>
-<center><a href="game.jsp" class="btn-primary" role="button">Start A Game</a></center>
+<%
+if(user == null){
+	out.print("Want start a game? /n Please <a href='register.jsp'>Register</a> or <a href='loginfinal.jsp'>Log in</a>.");
+} else {
+	out.print("<center><a href='game.jsp' class='btn-primary' role='button'>Start A Game</a></center>");
+}
+%>
 </p>
 </div>
 
