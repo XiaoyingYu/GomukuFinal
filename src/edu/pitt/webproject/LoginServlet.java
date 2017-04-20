@@ -50,8 +50,9 @@ public class LoginServlet extends HttpServlet {
 		String infor="";
 		if(rf.checkUserPass(email,password) == null){   
 			
-			   infor = "This username doesn't exist, please try again or sign up now ";
+			   infor = "This username doesn't exist, please try again or sign up now.<a href='register.jsp'>Sign Up Here!</a> ";
 			   request.setAttribute("message", infor);// Use userID(name of id) to get id
+			   request.getRequestDispatcher("loginfinal.jsp").forward(request, response);
 			      // in jsp, id is a string
 		}else{
 			GomokuUser userInfor=rf.checkUserPass(email, password);
@@ -63,11 +64,12 @@ public class LoginServlet extends HttpServlet {
 			   request.getSession().setAttribute("userLoss", userLoss);
 			   
 			   infor = "Welcome"+userInfor.getUsername();
+			   request.getRequestDispatcher("index.jsp").forward(request, response);
 			  }
-		System.out.println("sss");
 		
-		request.setAttribute("message", infor+"<br>");
-		request.getRequestDispatcher("index.jsp").forward(request, response);
+		
+		
+		
 		
 		//doGet(request, response);
 	}

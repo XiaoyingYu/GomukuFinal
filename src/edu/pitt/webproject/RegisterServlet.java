@@ -62,7 +62,7 @@ public class RegisterServlet extends HttpServlet {
 			request.setAttribute("info", infor + "<br>");
 			request.getRequestDispatcher("index.jsp").forward(request, response);
 		} else {
-			infor = "This email has been registered. Please change another one or login.<a href='loginfinal.jsp'class='btn-primary' role='button'>Log in here!</a>";
+			infor = "This email has been registered. Please change another one or login.<a href='loginfinal.jsp'>Log In Here!</a>";
 			request.setAttribute("info", infor + "<br>");
 			request.getRequestDispatcher("register.jsp").forward(request, response);
 		}

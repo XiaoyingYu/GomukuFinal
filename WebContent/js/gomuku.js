@@ -1000,7 +1000,9 @@ function success(a, b, c, d, temp, count) {
             winnerRes = "lose";
         }
         setCookie("winner", winner);
-
+        alert(winner);
+        var btn = document.getElementById("save");
+        btn.disabled = true;
 
         sendResult(winnerRes);
 
