@@ -31,7 +31,7 @@
             <div class="col-lg-8 col-lg-offset-2">
                 <div class="page-header">
               
-                    <h2>Sign In!</h2>
+                    <h2>Sign Up!</h2>
                 </div>
 
                 <form id="form" method="post" class="form-horizontal" action="RegisterServlet">

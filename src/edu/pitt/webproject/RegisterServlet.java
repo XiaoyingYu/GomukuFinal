@@ -54,13 +54,13 @@ public class RegisterServlet extends HttpServlet {
 		System.out.println("--->" + rf.checkUser(email));
 		if (rf.checkUser(email) == null) {
 			int id = rf.addUserToDB(user, email, password);
-			infor = "Success! Welcome " + user;
+			infor = "Success! Welcome " + user + "! <a href='loginfinal.jsp'>Log In Here!</a>";
 			// int id = rf.getUserID(email, password); //
 			request.setAttribute("userID", id);// Use userID(name of id) to get
 												// id
 			// in jsp, id is a string
 			request.setAttribute("info", infor + "<br>");
-			request.getRequestDispatcher("index.jsp").forward(request, response);
+			request.getRequestDispatcher("register.jsp").forward(request, response);
 		} else {
 			infor = "This email has been registered. Please change another one or login.<a href='loginfinal.jsp'>Log In Here!</a>";
 			request.setAttribute("info", infor + "<br>");
