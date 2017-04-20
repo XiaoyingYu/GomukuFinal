@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ page import="eud.pitt.webproject2.entities.GomokuUser"  %>
+    
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -34,6 +36,26 @@
             </button>
             <a class="navbar-brand" href="#">Gomuku Master</a>
         </div>
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav navbar-right">
+                <% 
+	GomokuUser user = (GomokuUser) session.getAttribute("userProfile");
+	
+	if(user == null){
+		out.print("<a href='register.jsp'>Register</a> / <a href='loginfinal.jsp'>Log in</a>");
+	} else {
+		out.print("<li><a href='account.jsp'>" + user.getUsername() + "</a></li>");
+		out.print("<li style='visibility:hidden' id='currentUserId'>" + user.getId() + "</li>");
+		
+		out.print("<li><a href='index.jsp'>Main Page</a></li>");
+		out.print("<li><a href='logout.jsp'>Log Out</a></li>");
+	
+
+	}
+	%>
+                </ul>
+                
+                
 
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
@@ -43,18 +65,29 @@
     </div><!-- /.container-fluid -->
 </nav>
 
-<div class="container">
+<div class="container" align="center">
     <div class="row main">
         <div class="col-md-12">
             <div class="row">
                 <div class="col-md-12">
                     <span class="glyphicon glyphicon-time"></span>
                     <label id="minutes">00</label>:<label id="seconds">00</label>
+                    <button type="button" onclick="isSaveGame()" id="save" >Save</button>
+                    <button type="button" onclick="isNewGameButton()" id="newgame" >New Game</button>
+                    <button type="button" onclick="loadGameFromRecord()" id="loadgame" >Load Game</button>
                 </div>
+<!--
+                <div>
+                    <button type="button" onclick="" id="save" >Save</button>
+                </div>
+                <div>
+                    <button type="button" onclick="isNewGameButton()" id="newgame" >New Game</button>
+                </div>
+-->
             </div>
             <div class="row">
                 <div class="col-md-12">
-                    <canvas width="1024" id="canvas" onmousedown="play(event)" height="768"></canvas>
+                    <canvas width="720" id="canvas" onmousedown="play(event)" height="520"></canvas>
                 </div>
             </div>
         </div>

@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import edu.pitt.webproject2.facade.LoginFacade;
 import edu.pitt.webproject2.facade.RegisterFacade;
+import eud.pitt.webproject2.entities.GomokuGame;
 import eud.pitt.webproject2.entities.GomokuUser;
 
 /**
@@ -54,15 +55,19 @@ public class LoginServlet extends HttpServlet {
 			      // in jsp, id is a string
 		}else{
 			GomokuUser userInfor=rf.checkUserPass(email, password);
+			int userWin = rf.getUserWin(userInfor.getId());
+			int userLoss = rf.getUserLoss(userInfor.getId());
 			   
 			   request.getSession().setAttribute("userProfile", userInfor);
-			  
+			   request.getSession().setAttribute("userWin", userWin);
+			   request.getSession().setAttribute("userLoss", userLoss);
+			   
 			   infor = "Welcome"+userInfor.getUsername();
 			  }
 		System.out.println("sss");
 		
 		request.setAttribute("message", infor+"<br>");
-		request.getRequestDispatcher("loginfinal.jsp").forward(request, response);
+		request.getRequestDispatcher("index.jsp").forward(request, response);
 		
 		//doGet(request, response);
 	}

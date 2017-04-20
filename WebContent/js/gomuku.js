@@ -548,7 +548,7 @@ for (var x = 0; x < 10; x++) {
  */
 function startLoad() {
     drawRect();
-    // loadGame();
+    //loadGame();
 }
 
 /**
@@ -558,7 +558,7 @@ function drawRect() {
     //创建棋盘背景
     canvas = document.getElementById("canvas");
     context = canvas.getContext("2d");
-    context.fillStyle = '#DCDCDC';
+    context.fillStyle = 'white';
     context.fillRect(0, 0, 720, 520); //1024, 768
     //标题
     //context.fillStyle = '#00f';
@@ -641,24 +641,40 @@ function loadGame() {
     //     }
     //   }
 }
-/**分割cookie中获取的字符串，从而加载棋子
+
+function loadGameFromRecord() {
+	// for test
+//	var data = "0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0";
+//	loadChessByRecord(data);
+	$.post("LoadRecord",
+	        {
+	            userID: parseInt($('#currentUserId').html()),
+	        },
+	        function(data,status){
+//	            alert("Data: " + data + "\nStatus: " + status);
+//	            $('#message').html("Save result: " + data);
+	        	loadChessByRecord(data);
+	        });
+}
+/**Split the string obtained in the cookie to load the pieces
  * @param  {[type]} color  [description]
  * @param  {[type]} record [description]
  * @return {[type]}        [description]
  */
 function loadChessByCookie(color, record) {
     if (record == null) {
-        console.log(color + "棋子没有游戏记录");
+        console.log(color + "There is no game record");
     } else {
         var a = record.split(";");
-        console.log(color + "第一次分割字符串：" + a)
+        console.log(color + "Segment the string for the first time：" + a)
         for (var i = 0; i < a.length; i++) {
             var b = a[i].split(",");
-            console.log("第" + (i + 1) + "个" + color + "棋子坐标：" + parseInt(b[0]) + "," + parseInt(b[1]));
+            console.log("First " + (i + 1) + " one " + color + "at coordiantes：" + parseInt(b[0]) + "," + parseInt(b[1]));
             chess(color, b[0], b[1]);
         }
     }
 }
+
 /** 落子
  * @param  {[type]} turn [description]
  * @param  {[type]} x    [description]
@@ -715,9 +731,11 @@ function chess(color, x, y) {
     }
     var a = getCookie(color);
     if (a != null) {
+        console.log("hello set cookie not null");
         delCookie(color);
         setCookie(color, a + ";" + x + "," + y, 30);
     } else {
+        console.log("hello set cookie");
         setCookie(color, x + "," + y, 30);
     }
 }
@@ -790,14 +808,49 @@ function isNewGameButton(){
 }
 
 //save game function
-function isSaveGame(x, y) {
-    if (x > 790 && x < 935 && y < 130 && y > 100) {
+function isSaveGame() {
+    
             if (confirm("save game?")) {
-                //ajax save piece position
+            	 $.post("SaveGame",
+            		        {
+            		            userID: parseInt($('#currentUserId').html()),
+            		            coordinate: chessData.toString()        
+            		        },
+            		        function(data,status){
+//            		            alert("Data: " + data + "\nStatus: " + status);
+            		            $('#message').html("Save result: " + data);
+            		        });
+                
             }
-        }
 
 }
+function loadChessByRecord(record) {
+    // var record = "0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0";
+    if (record == null) {
+        console.log(color + "There is no game record");
+    }
+    else {
+        var tmp = record.split(",");
+        var result = [];
+        while(tmp[0]) {
+            result.push(tmp.splice(0,10));
+        }
+        console.log("recover cheeseData:" + result);
+        for (var i = 0; i < 10; i++) {
+            for (var j = 0; j < 10; j++) {
+                console.log("x:" + i);
+                console.log("y:" + j);
+                if (result[i][j] == 1) {
+                    chess("white", i, j);
+                }
+                else if (result[i][j] == 2) {
+                    chess("black", i, j);
+                }
+            }
+        }
+    }
+}
+
 /**判断此局游戏是否已有结果
  * 每次落子判断游戏是否胜利
  *
@@ -941,11 +994,17 @@ function success(a, b, c, d, temp, count) {
 
 
         winner = "black wins!";
+        winnerRes = "win";
         if (temp == 1) {
             winner = "white wins!";
+            winnerRes = "lose";
         }
         setCookie("winner", winner);
-        alert(winner);
+
+
+        sendResult(winnerRes);
+
+        // alert(winner);
         //send record to database
         //saveVictory(winner);
         //stop timer when game is over
@@ -954,6 +1013,23 @@ function success(a, b, c, d, temp, count) {
         
     }
 }
+
+function sendResult(winner) {
+    console.log($('#currentUserId').html());
+    
+    $.post("SaveRecord",
+        {
+            userID: parseInt($('#currentUserId').html()),
+            result: winner,
+            movesRes: moves,
+            timeRes: totalSeconds,
+        },
+        function(data,status){
+//            alert("Data: " + data + "\nStatus: " + status);
+            $('#message').html("Save result: " + data);
+        });
+}
+
 /**使用cookie保存棋盘信息，防止不小心关闭网页
  * @param {[type]} name  [description]
  * @param {[type]} value [description]
@@ -968,6 +1044,7 @@ function setCookie(name, value, time) {
  *cookie
  */
 function getCookie(name) {
+    console.log("hello get cookie");
     var arr, reg = new RegExp("(^| )" + name + "=([^;]*)(;|$)");
     if (arr = document.cookie.match(reg))
         return unescape(arr[2]);

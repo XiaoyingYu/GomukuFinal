@@ -101,9 +101,7 @@
 });
 </script>
 
-    <center><p>
-   
-    <p><a href="account.jsp">Account Information! </a>
+
 
 </body>
 </html>

@@ -1,5 +1,7 @@
 package edu.pitt.webproject2.facade;
 
+import java.util.List;
+
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
@@ -9,6 +11,7 @@ import javax.persistence.Query;
 
 import eud.pitt.webproject2.entities.GomokuGame;
 import eud.pitt.webproject2.entities.GomokuJson;
+import eud.pitt.webproject2.entities.GomokuUser;
 
 @Stateless
 public class GameRecordFacade {
@@ -39,15 +42,61 @@ public class GameRecordFacade {
 	
 	public void addJsonToDB(int userID, String json){
 		
-		GomokuJson json = new GomokuJson();
-		json.setUserID(userID);
-		json.setJson(json);
+		GomokuJson j = new GomokuJson();
+		j.setUserID(userID);
+		j.setJson(json);
 		
 		try{
-			em.persist(json);
+			em.persist(j);
 			em.flush();
 		}catch(PersistenceException e){
 			e.printStackTrace();
 		}
+	}
+	
+	public void coverJsonToDB(int userID, String json) {
+		GomokuJson gomokuJson = (GomokuJson) em.createQuery("SELECT j FROM GomokuJson j WHERE j.userID=:userID")
+				.setParameter("userID", userID).getSingleResult();
+		gomokuJson.setJson(json);
+		em.persist(gomokuJson);
+	}
+	
+	public int checkUserInJson(int userID){
+		try{
+			GomokuJson j = (GomokuJson) em.createQuery("SELECT j FROM GomokuJson j WHERE j.userID=:userID")
+					.setParameter("userID", userID).getSingleResult();
+			return j.getUserID();
+		} catch (NoResultException e) {
+			return 0;
+		}
+	}
+	
+	public String returnJson(int userID){
+		try{
+//			GomokuJson j = (GomokuJson) em.createQuery("SELECT j FROM GomokuJson j WHERE j.userID=:userID")
+//					.setParameter("userID", userID).getSingleResult();
+			Query query = em.createQuery("SELECT j FROM GomokuJson j WHERE j.userID=:userID")
+			.setParameter("userID", userID);
+			List<GomokuJson> userGomokuList =  query.getResultList();
+			GomokuJson userGomoku = userGomokuList.get(userGomokuList.size()-1);
+			return userGomoku.getJson();
+		} catch (NoResultException e) {
+			return null;
+		}
+	}
+	
+	public void updateJson(int userID, String json){
+		//GomokuJson j = new GomokuJson();
+		em.getTransaction().begin();
+		GomokuJson j = em.find(GomokuJson.class, userID);
+		j.setJson(json);
+		em.getTransaction().commit();
+	}
+	
+	public void deleteJson(int userID){
+		em.getTransaction().begin();
+		GomokuJson j = em.find(GomokuJson.class, userID);
+		em.remove(j);
+		em.getTransaction().commit();
 	}
 }
