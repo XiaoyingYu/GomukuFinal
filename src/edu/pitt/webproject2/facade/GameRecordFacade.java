@@ -73,6 +73,7 @@ public class GameRecordFacade {
 	
 	public String returnJson(int userID){
 		try{
+
 //			GomokuJson j = (GomokuJson) em.createQuery("SELECT j FROM GomokuJson j WHERE j.userID=:userID")
 //					.setParameter("userID", userID).getSingleResult();
 			Query query = em.createQuery("SELECT j FROM GomokuJson j WHERE j.userID=:userID")
@@ -80,6 +81,7 @@ public class GameRecordFacade {
 			List<GomokuJson> userGomokuList =  query.getResultList();
 			GomokuJson userGomoku = userGomokuList.get(userGomokuList.size()-1);
 			return userGomoku.getJson();
+
 		} catch (NoResultException e) {
 			return null;
 		}
@@ -98,5 +100,28 @@ public class GameRecordFacade {
 		GomokuJson j = em.find(GomokuJson.class, userID);
 		em.remove(j);
 		em.getTransaction().commit();
+	}
+
+	
+	public int returnGameTimes(int userID){
+		try{
+			//GomokuJson j = new GomokuJson();
+			int gameTimes = em.createQuery("SELECT COUNT(j) FROM GomokuJSON j WHERE j.userID=:userID")
+					.setParameter("userID", userID).getFirstResult();
+			return gameTimes;
+		} catch (NoResultException e) {
+			return 0;
+		}
+	}
+	
+	public int returnWinTimes(int userID) {
+		try{
+			//GomokuJson j = new GomokuJson();
+			int winTimes = em.createQuery("SELECT COUNT(j) FROM GomokuJSON j WHERE j.userID=:userID AND j.win_or_lose=:win")
+					.setParameter("userID", userID).setParameter("win_or_lose", "win").getFirstResult();
+			return winTimes;
+		} catch (NoResultException e) {
+			return 0;
+		}
 	}
 }

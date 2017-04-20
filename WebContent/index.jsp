@@ -90,7 +90,6 @@ a:active {
 		out.print("<p><center><a href='game.jsp'class='btn-primary' role='button'>Start A Game</a></center>");
 	}
 	%>
-	</div>
 </p>
 </div>
 
