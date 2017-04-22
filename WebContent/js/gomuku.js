@@ -1,19 +1,11 @@
-/**五子棋
- * 思路：
- * 1.棋盘设置：使用HTML5的canvas标签绘制整个棋盘
- * 2.点击事件：当页面被点击时，获取点击的x,y像素点,根据此像素点进行判断，再在合适位置绘制黑白棋子，黑子棋子均是使用canvas绘制的
- * 3.保存落子记录：将数据存入一个二维数组，x和y表是落子坐标，1为白棋，2为黑棋，0代表此处无棋子，只有没有棋子的才能落子
- * 4.判断输赢：每次落子后以此坐标分别向左右，上下，右下，右上进行判断，设参数count，遇到同色棋子+1，遇到空格或不同色棋子终止，当count=5时，游戏结束
- * 20150930
+/**
+ * Gomuku JS
  */
-/**全局参数初始化
- *
- */
-var canvas; //html5画布
+var canvas; 
 var context;
-var isWhite = false; //设置是否该轮到白棋，黑棋先手
-var winner = ''; //赢家初始化为空
-var step = 225;//总步数
+var isWhite = false; 
+var winner = ''; 
+var step = 225;
 var moves = 0;
 
 //set piece images to var with source
@@ -29,7 +21,7 @@ var totalSeconds = 0;
 var myTimer = setInterval(setTime, 1000);
 
 
-var chessData = new Array(10); //二维数组存储棋盘落子信息,初始化数组chessData值为0即此处没有棋子，1为白棋，2为黑棋
+var chessData = new Array(10); //Chess Coordinate 
 
 var pieces = [
         {
@@ -555,7 +547,7 @@ function startLoad() {
  * 棋盘样式信息
  */
 function drawRect() {
-    //创建棋盘背景
+    //draw broad
     canvas = document.getElementById("canvas");
     context = canvas.getContext("2d");
     context.fillStyle = 'white';
@@ -621,26 +613,23 @@ function pad(val) {
 //}
 
 
-/**加载游戏记录
- * 通过cookie查询是否存在游戏记录，有则加载
- */
-function loadGame() {
-    var we = getCookie("white");
-    console.log("获取白色棋子的cookie" + we);
-    loadChessByCookie("white", we);
-    var bk = getCookie("black");
-    console.log("获取黑色棋子的cookie" + bk);
-    loadChessByCookie("black", bk);
-    winner = getCookie("winner"); //如果没有winner的cookie存在的话此处winner的值会被设为null
 
-    //判断是否该电脑走
+//function loadGame() {
+   // var we = getCookie("white");
+    //console.log("获取白色棋子的cookie" + we);
+    //loadChessByCookie("white", we);//
+    //var bk = getCookie("black");
+    //loadChessByCookie("black", bk);
+    //winner = getCookie("winner"); //
+
+   
     //   var temp=getCookie("isWhite");
     //   if(temp!=null){
     //     if(temp=="true"){
     //       AIplay();
     //     }
     //   }
-}
+//}
 
 function loadGameFromRecord() {
 	// for test
@@ -681,20 +670,20 @@ function loadChessByCookie(color, record) {
  * @param  {[type]} y    [description]
  * @return {[type]}      [description]
  */
-function drawChess(color, x, y) { //参数为，棋（1为白棋，2为黑棋），数组位置
+function drawChess(color, x, y) { //drawChess
     if (x >= 0 && x < 10 && y >= 0 && y < 10) {
         if (color == "white") {
             chess("white", x, y);
-            isWin("white", x, y); //判断输赢
+            isWin("white", x, y); //win or loss
             isWhite = false;
-            // document.getElementById("turns").innerHTML="玩家";
+            // document.getElementById("turns").innerHTML="player";
             // delCookie(isWhite);
             // setCookie("isWhite",isWhite);
         } else {
             chess("black", x, y);
             isWin("black", x, y); //判断输赢
             isWhite = true;
-            // document.getElementById("turns").innerHTML="电脑";
+            // document.getElementById("turns").innerHTML="computer";
             // delCookie(isWhite);
             // setCookie("isWhite",isWhite);
             AIplay();
@@ -706,9 +695,7 @@ function drawChess(color, x, y) { //参数为，棋（1为白棋，2为黑棋）
         alert(winner);
     }
 }
-/**绘制棋子，每次绘制棋子的时候刷新cookie信息
- *
- */
+
 function chess(color, x, y) {
     //context.fillStyle = color; //draw black
     //context.beginPath();
@@ -743,19 +730,19 @@ function chess(color, x, y) {
  * @param  {[type]} e [description]
  * @return {[type]}   [description]
  */
-function play(e) { //鼠标点击时发生
+function play(e) { //mouse click
     var color;
     var e = e || event;
     console.log("click on x: " + e.clientX);
     console.log("click on y: " + e.clientY);
     var clickLocation = getLocationInCanvas(e.clientX, e.clientY);
-    isNewGame(clickLocation.x, clickLocation.y); //是否点击了newgame
+    isNewGame(clickLocation.x, clickLocation.y); // whether click newgame
 
     var px = clickLocation.x - 160;
     var py = clickLocation.y - 60;
     var x = parseInt(px / 40);
     var y = parseInt(py / 40);
-    if (px < 0 || py < 0 || x > 9 || y > 9 || chessData[x][y] != 0) { //鼠标点击棋盘外的区域不响应
+    if (px < 0 || py < 0 || x > 9 || y > 9 || chessData[x][y] != 0) { 
         return;
     }
     doCheck(x, y);
@@ -770,7 +757,7 @@ function getLocationInCanvas(x, y) {//new function add here to get location of c
 }
 
 function doCheck(x, y) {
-    if (winner != '' && winner != null) { //已经结束的游戏只能点击new game
+    if (winner != '' && winner != null) { // only click new game after finish one game
         alert(winner);
         return;
     }
@@ -779,10 +766,10 @@ function doCheck(x, y) {
     } else {
         color = "black";
     }
-    console.log(color + "落子的位置是：" + x + "," + y);
+    console.log(color + "chess coordinate：" + x + "," + y);
     drawChess(color, x, y);
 }
-/**新游戏按钮
+/**New game button
  *
  */
 function isNewGame(x, y) {
@@ -851,16 +838,16 @@ function loadChessByRecord(record) {
     }
 }
 
-/**判断此局游戏是否已有结果
- * 每次落子判断游戏是否胜利
+/**whether is win
+ * 
  *
  */
 function isWin(color, x, y) {
-    console.log("判断" + color + "(" + x + "," + y + ")是否胜利");
+    console.log("Distinguish " + color + "(" + x + "," + y + ")whether win");
     var temp = 2; //default is black
     if (color == "white") {
         temp = 1;
-    } //白色
+    } //white
     console.log("temp=" + temp);
     lrCount(temp, x, y);
     tbCount(temp, x, y);
@@ -946,7 +933,7 @@ function rtCount(temp, x, y) {
 }
 
 function rbCount(temp, x, y) {
-    //右下斜判断
+    
     var line = new Array(4);
     var count = 0;
 
@@ -974,15 +961,15 @@ function rbCount(temp, x, y) {
     }
     success(line[0], line[1], line[2], line[3], temp, --count);
 }
-/**判断是否胜利及胜利之后的操作
+/**
  * @param  {[type]} turn  [description]
  * @param  {[type]} count [description]
  * @return {[type]}       [description]
  */
 function success(a, b, c, d, temp, count) {
-    if (count == 5) { //因为落子点重复计算了一次
-        console.log("此局游戏结束啦");
-        console.log("(" + a + "," + b + ")" + "到" + "(" + c + "," + d + ")");
+    if (count == 5) { //
+        console.log("end");
+        console.log("(" + a + "," + b + ")" + "to" + "(" + c + "," + d + ")");
 
         context.beginPath();
         context.lineWidth = 5;
@@ -1032,7 +1019,7 @@ function sendResult(winner) {
         });
 }
 
-/**使用cookie保存棋盘信息，防止不小心关闭网页
+/**set cookie
  * @param {[type]} name  [description]
  * @param {[type]} value [description]
  * @param {[type]} time  [description]
@@ -1042,9 +1029,7 @@ function setCookie(name, value, time) {
     exp.setTime(exp.getTime() + time * 24 * 60 * 60 * 1000);
     document.cookie = name + "=" + escape(value) + ";expires=" + exp.toGMTString();
 }
-/**获取cookie，初始化棋盘
- *cookie
- */
+
 function getCookie(name) {
     console.log("hello get cookie");
     var arr, reg = new RegExp("(^| )" + name + "=([^;]*)(;|$)");
@@ -1053,9 +1038,7 @@ function getCookie(name) {
     else
         return null;
 }
-/**删除cookie
- *
- */
+
 function delCookie(name) {
     var exp = new Date();
     exp.setTime(exp.getTime() - 1);
@@ -1064,50 +1047,19 @@ function delCookie(name) {
         document.cookie = name + "=" + cval + ";expires=" + exp.toGMTString();
 }
 /**
- * 禁止页面滚动事件
+ * 
  * @return {[type]} [description]
  */
 var pageScroll = 0;
 window.onscroll = function () {
     pageScroll++;
     scrollTo(0, 0);
-    if (pageScroll > 100) { //每当玩家滚动页面滚动条100次提醒
+    if (pageScroll > 100) { 
         pageScroll = 0;
     }
 }
-/**五子棋AI
- *思路：对棋盘上的每一个空格进行估分，电脑优先在分值高的点落子
- * 棋型：
- * 〖五连〗只有五枚同色棋子在一条阳线或阴线上相邻成一排
- * 〖成五〗含有五枚同色棋子所形成的连，包括五连和长连。
- * 〖活四〗有两个点可以成五的四。
- * 〖冲四〗只有一个点可以成五的四。
- * 〖死四〗不能成五的四。
- * 〖三〗在一条阳线或阴线上连续相邻的5个点上只有三枚同色棋子的棋型。
- * 〖活三〗再走一着可以形成活四的三。
- * 〖连活三〗即：连的活三（同色棋子在一条阳线或阴线上相邻成一排的活三）。简称“连三”。
- * 〖跳活三〗中间隔有一个空点的活三。简称“跳三”。
- * 〖眠三〗再走一着可以形成冲四的三。
- * 〖死三〗不能成五的三。
- * 〖二〗在一条阳线或阴线上连续相邻的5个点上只有两枚同色棋子的棋型。
- * 〖活二〗再走一着可以形成活三的二。
- * 〖连活二〗即：连的活二（同色棋子在一条阳线或阴线上相邻成一排的活二）。简称“连二”。
- * 〖跳活二〗中间隔有一个空点的活二。简称“跳二”。
- * 〖大跳活二〗中间隔有两个空点的活二。简称“大跳二”。
- * 〖眠二〗再走一着可以形成眠三的二。
- * 〖死二〗不能成五的二。
- * 〖先手〗对方必须应答的着法，相对于先手而言，冲四称为“绝对先手”。
- * 〖三三〗一子落下同时形成两个活三。也称“双三”。
- * 〖四四〗一子落下同时形成两个冲四。也称“双四”。
- * 〖四三〗一子落下同时形成一个冲四和一个活三。
- * 分值表
- * 成5:100000分
- * 活4：10000分
- * 活3+冲4:5000分
- * 眠3+活2：2000分
- * 眠2+眠1:1分
- * 死棋即不能成5的是0分
- * @return {[type]} [description]
+/**AI Part
+ 
  */
 function getPosition() {
     var a = new Array(2);
@@ -1128,7 +1080,7 @@ function getPosition() {
 
 function AIplay() {
     var str = getPosition();
-    // console.log("智能AI将在下面坐标下棋：" + str[0] + "," + str[1]);
+   
     doCheck(str[0], str[1]);
 }
 
@@ -1136,12 +1088,12 @@ function judge(x, y) {
     var a = parseInt(leftRight(x, y, 1)) + parseInt(topBottom(x, y, 1)) + parseInt(rightBottom(x, y, 1)) + parseInt(rightTop(x, y, 1)) + 100; //判断白棋走该位置的得分
     var b = parseInt(leftRight(x, y, 2)) + parseInt(topBottom(x, y, 2)) + parseInt(rightBottom(x, y, 2)) + parseInt(rightTop(x, y, 2)); //判断黑棋走该位置的得分
     var result = a + b;
-    // console.log("我计算出了" + x + "," + y + "这个位置的得分为" + result);
-    return result; //返回黑白棋下该位置的总和
+  
+    return result; //return AI
 }
 
 function leftRight(x, y, num) {
-    var death = 0; //0表示两边都没堵住,且可以成5，1表示一边堵住了，可以成5,2表示是死棋，不予考虑
+    var death = 0; //
     var live = 0;
     var count = 0;
     var arr = new Array(10);
@@ -1167,7 +1119,7 @@ function leftRight(x, y, num) {
         if (arr[i][y] == num) {
             count++;
         } else if (arr[i][y] == 0) {
-            live += 1; //空位标记
+            live += 1; //
             i = 100;
         } else {
             death += 1;
@@ -1303,9 +1255,7 @@ function rightTop(x, y, num) {
     // console.log(x + "," + y + "位置上的右上斜得分为" + model(count, death));
     return model(count, death);
 }
-/**罗列相等效果的棋型(此处只考虑常见的情况，双成五，双活四等少概率事件不考虑)
- * 必胜棋：成五=活四==双活三=冲四+活三=双冲四
- *
+/**
  *
  *
  */
